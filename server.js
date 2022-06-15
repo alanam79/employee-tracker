@@ -42,8 +42,6 @@ const addNewDepartment = [
 ];
 
 const addNewRole = [
-  //     inquirer
-  //   .prompt([
   {
     type: "input",
     name: "role",
