@@ -1,24 +1,24 @@
-const express = require("express");
-const db = require("./db/connection");
+const inquirer = require('inquirer');
+// const db = require("./db/connection");
+// require("console.table");
 
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-// GET TEST ROUTE
-// app.get("/", (req, res) => {
-//   res.json({
-//     message: "Hello World",
-//   });
-// });
+console.log(inquirer);
 
 //  get all departments
-// db.query(`SELECT * FROM departments`, (err, rows) => {
-//     console.log(rows);
+// app.get("/api/departments", (req, res) => {
+//   const sql = `SELECT * FROM departments`;
+
+//   db.query(sql, (err, rows) => {
+//     if (err) {
+//       res.status(500).json({ error: err.message });
+//       return;
+//     }
+//     res.json({
+//       message: "success",
+//       data: rows,
+//     });
 //   });
+// });
 
 // get one department
 // db.query(`SELECT * FROM departments WHERE id = 1`, (err, row) => {
@@ -37,29 +37,15 @@ app.use(express.json());
 // });
 
 // add a department
-const sql = `INSERT INTO departments (id, department_name)
-                VALUES (?,?)`;
+// const sql = `INSERT INTO departments (id, department_name)
+//                 VALUES (?,?)`;
 
-const params = [1, 'Executive'];
+// const params = [1, 'Executive'];
 
-db.query(sql, params, (err, result) => {
-    if (err) {
-        console.log(err);
-    }
-    console.log(result);
-});
+// db.query(sql, params, (err, result) => {
+//     if (err) {
+//         console.log(err);
+//     }
+//     console.log(result);
+// });
 
-// Default response for any other request (not found), this is a very important catchall, so must be the last route
-app.use((req, res) => {
-  res.status(404).end();
-});
-
-// Start server after DB connection
-db.connect((err) => {
-    if (err) throw err;
-
-// starts server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}🚀`);
-});
-  });
