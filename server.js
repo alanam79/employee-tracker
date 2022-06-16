@@ -132,7 +132,7 @@ const addNewEmployee = [
       if (managerInput) {
         return true;
       } else {
-        console.log("Please enter the new employees manager! (Required)");
+        console.log("Please enter the new employees manager! Please select ID# from Department List. (Required)");
         return false;
       }
     },
