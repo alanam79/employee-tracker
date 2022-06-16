@@ -31,6 +31,6 @@ INSERT INTO role (id, title, salary, department_id)
     (6, 'Katie', 'TA', 6, 1),
     (7, 'Jim', 'Gryck', 7, 6),
     (8, 'Katie', 'McKeel', 8, 1),
-    (9, 'Alissa', 'Smith', 9, 10),
+    (9, 'Alissa', 'Smith', 9, 1),
     (10, 'Don', 'Ruth', 10, 9);
 
