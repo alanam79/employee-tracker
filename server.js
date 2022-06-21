@@ -138,32 +138,27 @@ const addNewRole = () => {
           name: name,
           value: id,
         }));
-        inquirer.prompt([
-          {
-            type: "list",
-            name: "department",
-            message:
-              'What department is the new role in?',
-            choices: departmentChoices, 
-          },
-        ])
-        .then((answers) => {
-          const newRole = {
-            title: title,
-            salary: salary,
-            department: answers.department
-          }
-          db.addRole(newRole)
-          .then(() =>
-            console.log(
-              `Added ${title} to the database!`
-            )
-          )
-          .then(() => startChoiceMenu());
-        })
+        inquirer
+          .prompt([
+            {
+              type: "list",
+              name: "department",
+              message: "What department is the new role in?",
+              choices: departmentChoices,
+            },
+          ])
+          .then((answers) => {
+            const newRole = {
+              title: title,
+              salary: salary,
+              department: answers.department,
+            };
+            db.addRole(newRole)
+              .then(() => console.log(`Added ${title} to the database!`))
+              .then(() => startChoiceMenu());
+          });
       });
     });
-
 };
 
 const addNewEmployee = () => {
@@ -243,45 +238,32 @@ const addNewEmployee = () => {
     });
 };
 
-const updateEmployeeRole = [
-  {
-    type: "input",
-    name: "employee_id",
-    message:
-      'Which employee would you like to update? Please use employee id #! (i.e. "4")',
-    validate: (employee_idInput) => {
-      if (employee_idInput) {
-        return true;
-      } else {
-        console.log("Please enter the employee ID#! (Required)");
-        return false;
-      }
-    },
-  },
-  {
-    type: "input",
-    name: "role_id",
-    message:
-      'What new role would you like for your employee? Please use role ID#! (i.e. "4")',
-    validate: (role_idInput) => {
-      if (role_idInput) {
-        return true;
-      } else {
-        console.log("Please enter the role ID#! (Required)");
-        return false;
-      }
-    },
-  },
-];
+const updateEmployeeRole = () => {
+  inquirer
+    .prompt({
+      type: "list",
+      name: "updateEmployee",
+      message: "Which employee do you want to update?",
+      choices: employeeChoices,
+    })
+    .then((response) => {
+      let updateEmployee = response.updateEmployee;
+
+      db.findAllEmployees().then(([rows]) => {
+        let employees = rows;
+
+        const employeeChoices = employees.map({});
+      });
+    });
+}
+      inquirer
+      .prompt({
+      type: "input",
+      name: "role_id",
+      message:
+        'What new role would you like for your employee? Please use role ID#! (i.e. "4")',
+    }),
+
+
 
 startChoiceMenu();
-
-// VALIDATE STATEMENTN
-// validate: (lastNameInput) => {
-//   if (lastNameInput) {
-//     return true;
-//   } else {
-//     console.log("Please enter a last name! (Required)");
-//     return false;
-//   }
-// },
