@@ -42,7 +42,7 @@ const startChoiceMenu = () => {
         case "Add a Role":
           addNewRole();
           break;
-        case "Update an Employee":
+        case "Update an Employee Role":
           updateEmployeeRole();
           break;
       }
@@ -226,26 +226,23 @@ const addNewEmployee = () => {
 };
 
 const updateEmployeeRole = () => {
-  db.viewAllEmployees().then(([rows]) => {
+  db.findAllEmployees().then(([rows]) => {
     let employees = rows;
     console.log(employees);
 
     const employeeChoices = employees.map(
       ({ id, first_name, last_name, }) => ({
-        first_name: first_name,
-        last_name: last_name,
-        value: id,
+        name: `${first_name} ${last_name}`,
+        value: id
       })
     );
 
     db.findAllRoles().then(([rows]) => {
       let roles = rows;
 
-      const roleChoices = roles.map(({ id, title, salary, department_id }) => ({
+      const roleChoices = roles.map(({ id, title }) => ({
         name: title,
-        value: id,
-        salary: salary,
-        department_id,
+        value: id
       }));
 
       inquirer
@@ -266,7 +263,7 @@ const updateEmployeeRole = () => {
         ])
         .then((response) => {
           db.updateEmployee(response)
-            .then(() => console.log(`Updated ${title} 's role!`))
+            .then(() => console.log(`Updated ${response.employee_id} 's role!`))
             .then(() => startChoiceMenu());
         });
     });

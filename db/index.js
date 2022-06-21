@@ -52,7 +52,7 @@ class DB {
       .promise()
       .query("UPDATE employee SET role_id = ? WHERE id = ?", [
         employee.role_id,
-        employee.id,
+        employee.employee_id,
       ]);
   }
 }
