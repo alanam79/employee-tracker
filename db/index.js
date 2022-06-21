@@ -38,19 +38,22 @@ class DB {
   }
 
   addRole(role) {
-    return this.connection.promise().query("INSERT into role (title, salary, department_id) VALUES (?,?,?)", 
-    [
+    return this.connection
+      .promise()
+      .query("INSERT into role (title, salary, department_id) VALUES (?,?,?)", [
         role.title,
         role.salary,
         role.department,
-    ])
-  };
+      ]);
+  }
 
   updateEmployee(employee) {
-    return this.connection.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [
-        // employee.role_id,
-        // employee.id
-    ])
+    return this.connection
+      .promise()
+      .query("UPDATE employee SET role_id = ? WHERE id = ?", [
+        employee.role_id,
+        employee.id,
+      ]);
   }
 }
 

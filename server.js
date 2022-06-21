@@ -42,6 +42,9 @@ const startChoiceMenu = () => {
         case "Add a Role":
           addNewRole();
           break;
+        case "Update an Employee":
+          updateEmployeeRole();
+          break;
       }
     });
 };
@@ -103,28 +106,12 @@ const addNewRole = () => {
         type: "input",
         name: "role",
         message: "What is the name of the new role?",
-        validate: (roleInput) => {
-          if (roleInput) {
-            return true;
-          } else {
-            console.log("Please enter a role! (Required)");
-            return false;
-          }
-        },
       },
       {
         type: "input",
         name: "salary",
         message:
           'What is the salary of the new role? (numbers only! i.e. "1234")',
-        validate: (salaryInput) => {
-          if (salaryInput && validator.isNumeric(salaryInput)) {
-            return true;
-          } else {
-            console.log("Please enter a salary! (Required)");
-            return false;
-          }
-        },
       },
     ])
     .then((answers) => {
@@ -239,30 +226,52 @@ const addNewEmployee = () => {
 };
 
 const updateEmployeeRole = () => {
-  inquirer
-    .prompt({
-      type: "list",
-      name: "updateEmployee",
-      message: "Which employee do you want to update?",
-      choices: employeeChoices,
-    })
-    .then((response) => {
-      let updateEmployee = response.updateEmployee;
+  db.viewAllEmployees().then(([rows]) => {
+    let employees = rows;
+    console.log(employees);
 
-      db.findAllEmployees().then(([rows]) => {
-        let employees = rows;
+    const employeeChoices = employees.map(
+      ({ id, first_name, last_name, }) => ({
+        first_name: first_name,
+        last_name: last_name,
+        value: id,
+      })
+    );
 
-        const employeeChoices = employees.map({});
-      });
-    });
-}
+    db.findAllRoles().then(([rows]) => {
+      let roles = rows;
+
+      const roleChoices = roles.map(({ id, title, salary, department_id }) => ({
+        name: title,
+        value: id,
+        salary: salary,
+        department_id,
+      }));
+
       inquirer
-      .prompt({
-      type: "input",
-      name: "role_id",
-      message:
-        'What new role would you like for your employee? Please use role ID#! (i.e. "4")',
-    }),
+        .prompt([
+          {
+            type: "list",
+            name: "employee_id",
+            message: "Which employee do you want to update?",
+            choices: employeeChoices,
+          },
+          {
+            type: "list",
+            name: "role_id",
+            message:
+              'What new role would you like for your employee? Please use role ID#! (i.e. "4")',
+            choices: roleChoices,
+          },
+        ])
+        .then((response) => {
+          db.updateEmployee(response)
+            .then(() => console.log(`Updated ${title} 's role!`))
+            .then(() => startChoiceMenu());
+        });
+    });
+  });
+};
 
 
 
